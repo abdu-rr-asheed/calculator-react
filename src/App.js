@@ -76,8 +76,8 @@ function reducer(state, { type, payload }) {
 
       return {
         ...state,
-        currentOperand: state.currentOperand.slice(0, -1)
-      }
+        currentOperand: state.currentOperand.slice(0, -1),
+      };
 
     case ACTIONS.EVALUATE:
       if (
@@ -95,6 +95,8 @@ function reducer(state, { type, payload }) {
         operation: null,
         currentOperand: evaluate(state),
       };
+    default:
+      return;
   }
 }
 
@@ -116,6 +118,8 @@ function evaluate({ currentOperand, previousOperand, operation }) {
     case "÷":
       computation = prev / current;
       break;
+    default:
+      return;
   }
 
   return computation.toString();
@@ -123,12 +127,12 @@ function evaluate({ currentOperand, previousOperand, operation }) {
 
 const INTEGER_FORMATTER = new Intl.NumberFormat("en-us", {
   maximumFractionDigits: 0,
-})
-function formatOperand(operand){
-  if (operand == null) return
-  const [integer, decimal] = operand.split('.')
-  if (decimal == null) return INTEGER_FORMATTER.format(integer)
-  return `${INTEGER_FORMATTER.format(integer)}.${decimal}`
+});
+function formatOperand(operand) {
+  if (operand == null) return;
+  const [integer, decimal] = operand.split(".");
+  if (decimal == null) return INTEGER_FORMATTER.format(integer);
+  return `${INTEGER_FORMATTER.format(integer)}.${decimal}`;
 }
 
 function App() {
@@ -151,7 +155,9 @@ function App() {
       >
         AC
       </button>
-      <button onClick={() => dispatch({ type: ACTIONS.DELETE_DIGIT })}>DEl</button>
+      <button onClick={() => dispatch({ type: ACTIONS.DELETE_DIGIT })}>
+        DEl
+      </button>
       <OperationButton operation="÷" dispatch={dispatch} />
       <DigitButton digit="1" dispatch={dispatch} />
       <DigitButton digit="2" dispatch={dispatch} />
